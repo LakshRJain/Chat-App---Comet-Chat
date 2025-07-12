@@ -11,6 +11,7 @@ import Main from './Main';
 import { useState } from 'react';
 import { defaultColorDark } from '@cometchat/chat-uikit-react-native/src/theme/default';
 import { defaultColorLight } from '@cometchat/chat-uikit-react-native/src/theme/default';
+import { defaultLightTheme } from '@cometchat/chat-uikit-react-native/src/theme/default/default';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -43,10 +44,10 @@ function App() {
       {!loggedIn && (
         <View style={styles.loginContainer}>
           <View style={styles.loginCard}>
-            <Text style={[styles.title, { color: isDarkMode ? '#fff' : '#333' }]}>
+            <Text style={[styles.title, { color: isDarkMode ? defaultColorLight.background1 : defaultColorDark.background1 }]}>
               Welcome
             </Text>
-            <Text style={[styles.subtitle, { color: isDarkMode ? '#ccc' : '#666' }]}>
+            <Text style={[styles.subtitle, { color: isDarkMode ? defaultColorLight.background1 : defaultColorDark.background1 }]}>
               Please enter your username to continue
             </Text>
             
@@ -54,9 +55,9 @@ function App() {
               style={[
                 styles.input,
                 {
-                  backgroundColor: isDarkMode ? '#2a2a2a' : '#fff',
+                  backgroundColor: isDarkMode ? defaultColorDark.background4 : defaultColorLight.background4,
                   borderColor: isDarkMode ? '#444' : '#ddd',
-                  color: isDarkMode ? '#fff' : '#333',
+                  color: isDarkMode ? defaultColorLight.background2 : defaultColorDark.background2,
                 }
               ]}
               placeholder="Username"
