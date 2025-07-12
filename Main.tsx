@@ -1,14 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, SafeAreaView, ViewStyle } from 'react-native';
+import { Alert, Button, SafeAreaView, Text, TouchableOpacity, ViewStyle } from 'react-native';
 import {
   CometChatConversations,
   CometChatUIKit,
   CometChatUiKitConstants,
   UIKitSettings,
   CometChatThemeProvider,
+  CometChatIncomingCall,
+  CometChatCallLogs,
+  CometChatCallButtons 
 } from '@cometchat/chat-uikit-react-native';
 import { CometChat } from '@cometchat/chat-sdk-react-native';
-import { CometChatIncomingCall } from '@cometchat/chat-uikit-react-native';
 import Messages from './Messages';
 
 /* -------------------------------------------------------------------------- */
@@ -37,6 +39,8 @@ const Main = ({ UID,onLoginFail }: { UID: string ;onLoginFail:()=>void;}): React
   const [messageUser, setMessageUser] = useState<CometChat.User>();
   const [messageGroup, setMessageGroup] = useState<CometChat.Group>();
   const [callReceived, setCallReceived] = useState(false);
+  const [showCallLogs, setShowCallLogs] = useState(false);
+
   // Store the incoming call object for use in the UI
   const incomingCall = useRef<CometChat.Call | CometChat.CustomMessage | null>(
     null,
@@ -126,28 +130,43 @@ const Main = ({ UID,onLoginFail }: { UID: string ;onLoginFail:()=>void;}): React
             {/* Conversation list (hidden when a chat is open) */}
             {!callReceived && (
               <>
-                <CometChatConversations
-                  style={{
-                    containerStyle: {
-                      display: messageUser || messageGroup ? 'none' : 'flex',
-                    },
-                  }}
-                  onItemPress={(conversation: CometChat.Conversation) => {
-                    if (
-                      conversation.getConversationType() ===
-                      CometChatUiKitConstants.ConversationTypeConstants.user
-                    ) {
-                      setMessageUser(
-                        conversation.getConversationWith() as CometChat.User,
+                {!showCallLogs ? (
+                  <CometChatConversations
+                    style={{
+                      containerStyle: {
+                        display: messageUser || messageGroup ? 'none' : 'flex',
+                      },
+                    }}
+                    onItemPress={(conversation: CometChat.Conversation) => {
+                      if (
+                        conversation.getConversationType() ===
+                        CometChatUiKitConstants.ConversationTypeConstants.user
+                      ) {
+                        setMessageUser(
+                          conversation.getConversationWith() as CometChat.User,
+                        );
+                        return;
+                      }
+                      setMessageGroup(
+                        conversation.getConversationWith() as CometChat.Group,
                       );
-                      return;
-                    }
-                    setMessageGroup(
-                      conversation.getConversationWith() as CometChat.Group,
-                    );
-                  }}
-                />
-
+                    }}
+                  />
+                ) : (
+                  <>
+                  <CometChatCallLogs />;
+                  </>
+                )}
+                {!(callReceived || messageUser || messageGroup) &&  (
+                  <TouchableOpacity onPress={() => setShowCallLogs(true)} style={{ margin: 10, padding: 10, backgroundColor: '#007AFF', borderRadius: 5 }}>
+                  {!showCallLogs?(
+                    <Text style={{ color: 'white', textAlign: 'center' }}>Call Logs</Text>
+                  ):(
+                    <Text style={{ color: 'white', textAlign: 'center' }}> Chats </Text>
+                  )}
+                  </TouchableOpacity>
+                )}
+                
                 {/* Active chat screen */}
                 {(messageUser || messageGroup) && (
                   <Messages
