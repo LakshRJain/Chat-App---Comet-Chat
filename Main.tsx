@@ -142,11 +142,21 @@ const Main = ({
 
                       case 'groups':
                         return (
+                          <>
                           <CometChatGroups
                             onItemPress={(group: CometChat.Group) => {
                               setMessageGroup(group);
                             }}
                           />
+                          <TouchableOpacity
+                              onPress={() => setActiveScreen('users')}
+                              style={styles.fab}
+                            >
+                              <Text style={[styles.fabText, styles.fabTextPadding]}>
+                                Users
+                              </Text>
+                            </TouchableOpacity>
+                          </>
                         );
 
                       case 'calls':
