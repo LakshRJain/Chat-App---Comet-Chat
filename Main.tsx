@@ -21,7 +21,7 @@ import {
 import { CometChat } from '@cometchat/chat-sdk-react-native';
 import Messages from './Messages';
 import { defaultColorDark } from '@cometchat/chat-uikit-react-native/src/theme/default';
-
+import { COMETCHAT_APP_ID, COMETCHAT_AUTH_KEY, COMETCHAT_REGION } from '@env';
 const Main = ({
   UID,
   onLoginFail,
@@ -29,9 +29,9 @@ const Main = ({
   UID: string;
   onLoginFail: () => void;
 }): React.ReactElement => {
-  const APP_ID = '27837076b1c8076c';
-  const AUTH_KEY = '47fc7fd4c0d63350579c9ec691dc98c3c73217f6';
-  const REGION = 'in';
+  const APP_ID = COMETCHAT_APP_ID;
+  const AUTH_KEY = COMETCHAT_AUTH_KEY;
+  const REGION = COMETCHAT_REGION;
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [messageUser, setMessageUser] = useState<CometChat.User>();
